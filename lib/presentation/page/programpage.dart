@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:namer_app/presentation/widget/expandingfab/actionbutton.dart';
 import 'package:namer_app/presentation/widget/expandingfab/expandingfab.dart';
+import 'package:namer_app/presentation/widget/program/programform.dart';
+import 'package:namer_app/presentation/widget/program/programlist.dart';
 
 class ProgramPage extends StatelessWidget {
   const ProgramPage({
@@ -16,7 +18,7 @@ class ProgramPage extends StatelessWidget {
       // ),
       child: Scaffold(
         body: Center(
-          child: Text("Programs"),
+          child: ProgramList(),
         ),
         floatingActionButton: ExpandableFab(
           distance: 100,
@@ -26,6 +28,14 @@ class ProgramPage extends StatelessWidget {
             ),
             ActionButton(
               icon: Icon(Icons.add),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProgramForm(program: null),
+                  ),
+                );
+              },
             ),
           ],
         ),

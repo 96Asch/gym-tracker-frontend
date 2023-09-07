@@ -26,7 +26,7 @@ class DioProgramRepository implements Repository<Program> {
         path,
         queryParameters: options.toMap(),
       );
-      final programJson = (response.data as Map<String, dynamic>)['exercises'];
+      final programJson = (response.data as Map<String, dynamic>)['programs'];
       final programs =
           (programJson as List).map((json) => Program.fromJson(json)).toList();
 

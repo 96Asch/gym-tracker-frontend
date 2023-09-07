@@ -4,7 +4,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:namer_app/config/config.dart';
 import 'package:namer_app/model/entity/exercise/exercise.dart';
-import 'package:namer_app/model/entity/exercise/exercisefilteroptions.dart';
 import 'package:namer_app/model/entity/mappable.dart';
 import 'package:namer_app/model/repository/repository.dart';
 import 'package:namer_app/presentation/state/repository.dart';
