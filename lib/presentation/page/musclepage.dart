@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:namer_app/config/calcgriditems.dart';
 import 'package:namer_app/config/config.dart';
 import 'package:namer_app/model/entity/muscle/controller.dart';
 import 'package:namer_app/model/entity/muscle/muscle.dart';
@@ -9,23 +10,10 @@ import 'package:namer_app/presentation/widget/expandingfab/expandingfab.dart';
 import 'package:namer_app/presentation/widget/muscle/muscleaddbutton.dart';
 import 'package:namer_app/presentation/widget/muscle/musclegridview.dart';
 
-class EmptyMuscleController implements IMuscleController {
-  @override
-  bool isSelected(Muscle muscle) {
-    return false;
-  }
-
-  @override
-  void onSelected(Muscle muscle) {
-    // TODO: implement onSelected
-  }
-}
-
 class MusclePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var muscles = ref.watch(muscleApiProvider);
-    final shortestSide = MediaQuery.of(context).size.shortestSide;
 
     return Scaffold(
       appBar: AppBar(
@@ -37,7 +25,7 @@ class MusclePage extends ConsumerWidget {
           padding: const EdgeInsets.all(8.0),
           child: MuscleGridView(
             muscles: data,
-            numTilesPerRow: shortestSide < Config.phoneSize ? 3 : 5,
+            numTilesPerRow: getNumGridItems(context),
           ),
         ),
         error: (error, stackTrace) => Placeholder(),

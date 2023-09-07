@@ -24,13 +24,13 @@ class MyApp extends ConsumerWidget {
     return MaterialApp(
       title: 'Gym Tracker',
       theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(
-            seedColor: Color.fromARGB(255, 119, 5, 5),
-            brightness: Brightness.light),
+        useMaterial3: false,
+        colorScheme: ColorScheme.dark(),
       ),
       darkTheme: ThemeData(
-        brightness: Brightness.dark,
+        colorScheme: ColorScheme.fromSeed(
+            seedColor: Color.fromARGB(255, 220, 0, 0),
+            brightness: Brightness.dark),
       ),
       themeMode: ThemeMode.system,
       home: HomePage(),

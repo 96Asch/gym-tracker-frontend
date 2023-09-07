@@ -9,7 +9,7 @@ part 'programexercise.g.dart';
 class ProgramExercise with _$ProgramExercise {
   const factory ProgramExercise({
     @JsonKey(name: 'id') required int id,
-    @JsonKey(name: 'order') required String name,
+    @JsonKey(name: 'order') required int order,
     @JsonKey(name: 'Exercise') required Exercise exercise,
   }) = _ProgramExercise;
 

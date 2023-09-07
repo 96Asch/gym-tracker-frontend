@@ -57,13 +57,6 @@ class ExerciseForm extends ConsumerWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    Icon(Icons.perm_identity),
-                    SizedBox(width: 10),
-                    Text("Name", style: formTextStyle),
-                  ],
-                ),
                 TextFormField(
                   controller: _formNameTextController,
                   validator: (value) {
@@ -72,6 +65,10 @@ class ExerciseForm extends ConsumerWidget {
                     }
                     return null;
                   },
+                  decoration: const InputDecoration(
+                    icon: Icon(Icons.local_activity),
+                    labelText: "Enter exercise name",
+                  ),
                 ),
                 SizedBox(
                   height: 20,

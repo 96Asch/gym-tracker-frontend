@@ -1,24 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:namer_app/presentation/state/programapi.dart';
 import 'package:namer_app/presentation/widget/expandingfab/actionbutton.dart';
 import 'package:namer_app/presentation/widget/expandingfab/expandingfab.dart';
 import 'package:namer_app/presentation/widget/program/programform.dart';
 import 'package:namer_app/presentation/widget/program/programlist.dart';
 
-class ProgramPage extends StatelessWidget {
+class ProgramPage extends ConsumerWidget {
   const ProgramPage({
     super.key,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final programs = ref.watch(programApiProvider);
+
     return Center(
-      // child: Column(
-      //   mainAxisAlignment: MainAxisAlignment.center,
-      //   children: [Expanded(child: Text("LogPage2"))],
-      // ),
       child: Scaffold(
-        body: Center(
-          child: ProgramList(),
+        body: programs.when(
+          data: (data) => ProgramList(programs: data),
+          error: (error, stackTrace) => Text(error.toString()),
+          loading: () => CircularProgressIndicator(),
         ),
         floatingActionButton: ExpandableFab(
           distance: 100,
