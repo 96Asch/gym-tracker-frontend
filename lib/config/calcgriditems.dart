@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:namer_app/config/config.dart';
 
 int getNumGridItems(BuildContext context) {
   final shortestSide = MediaQuery.of(context).size.shortestSide;

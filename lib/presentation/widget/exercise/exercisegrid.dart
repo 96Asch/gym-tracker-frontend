@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:namer_app/config/calcgriditems.dart';
-import 'package:namer_app/config/config.dart';
 import 'package:namer_app/model/entity/exercise/exercise.dart';
 import 'package:namer_app/presentation/widget/exercise/exercisegridtile.dart';
 

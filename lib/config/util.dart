@@ -10,4 +10,12 @@ extension StringExtension on String {
 
     return capitalized.join((' '));
   }
+
+  bool isInt() {
+    return int.tryParse(this) != null;
+  }
+
+  bool isDouble() {
+    return double.tryParse(this) != null;
+  }
 }

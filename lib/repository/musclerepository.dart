@@ -64,8 +64,7 @@ class DioMuscleRepository implements Repository<Muscle> {
   @override
   FutureOr<Muscle> update(Muscle model) async {
     try {
-      final response = await client.put(path, data: {
-        "id": model.id,
+      final response = await client.put('$path/${model.id}', data: {
         "name": model.name,
       });
       final muscle = Muscle.fromJson(response.data['muscle']);
@@ -96,5 +95,10 @@ class DioMuscleRepository implements Repository<Muscle> {
 
       throw Exception(errorMessage);
     }
+  }
+
+  @override
+  FutureOr<List<Muscle>> postBulk(List<Muscle> models) {
+    return [];
   }
 }

@@ -3,7 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_scroll_shadow/flutter_scroll_shadow.dart';
 import 'package:intl/intl.dart';
 import 'package:namer_app/model/entity/program/program.dart';
+import 'package:namer_app/model/entity/program/programexercisefilteroptions.dart';
 import 'package:namer_app/presentation/state/programapi.dart';
+import 'package:namer_app/presentation/page/programexercisepage.dart';
+import 'package:namer_app/presentation/state/programexerciseapi.dart';
 
 class ProgramList extends ConsumerWidget {
   final List<Program> programs;
@@ -22,23 +25,40 @@ class ProgramList extends ConsumerWidget {
         child: ScrollShadow(
           child: ListView(
             children: programs.map((program) {
-              return Column(
-                children: [
-                  ListTile(
-                    title: Text(program.name),
-                    subtitle: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Icon(Icons.access_time),
-                        SizedBox(width: 10),
-                        Text(DateFormat(DateFormat.YEAR_MONTH_DAY)
-                            .format(program.endDate)),
-                      ],
+              return GestureDetector(
+                onTap: () {
+                  ref
+                      .read(programExerciseApiProvider.notifier)
+                      .loadProgramExercises(program.id);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return ProgramExercisePage(
+                          program: program,
+                        );
+                      },
                     ),
-                    leading: Icon(Icons.abc),
-                  ),
-                  Divider()
-                ],
+                  );
+                },
+                child: Column(
+                  children: [
+                    ListTile(
+                      title: Text(program.name),
+                      subtitle: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Icon(Icons.access_time),
+                          SizedBox(width: 10),
+                          Text(DateFormat(DateFormat.YEAR_MONTH_DAY)
+                              .format(program.endDate)),
+                        ],
+                      ),
+                      leading: Icon(Icons.abc),
+                    ),
+                    Divider()
+                  ],
+                ),
               );
             }).toList(),
           ),

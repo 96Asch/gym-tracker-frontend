@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:namer_app/config/calcgriditems.dart';
-import 'package:namer_app/config/config.dart';
-import 'package:namer_app/model/entity/muscle/controller.dart';
-import 'package:namer_app/model/entity/muscle/muscle.dart';
 import 'package:namer_app/presentation/state/muscleapi.dart';
 import 'package:namer_app/presentation/widget/expandingfab/actionbutton.dart';
 import 'package:namer_app/presentation/widget/expandingfab/expandingfab.dart';

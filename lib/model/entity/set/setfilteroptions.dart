@@ -11,8 +11,7 @@ class SetFilterOptions with _$SetFilterOptions implements Mappable {
   const factory SetFilterOptions({
     @Default([]) List<int> ids,
     @Default(0) int repetitions,
-    @Default([]) List<int> programIds,
-    @Default([]) List<int> exerciseIds,
+    @Default([]) List<int> programExerciseIds,
     @Default(null) bool? isDouble,
     @Default(null) bool? nested,
   }) = _SetFilterOptions;
@@ -29,12 +28,8 @@ class SetFilterOptions with _$SetFilterOptions implements Mappable {
       map['repetitions'] = repetitions;
     }
 
-    if (programIds.isNotEmpty) {
-      map['ids'] = programIds.join(',');
-    }
-
-    if (exerciseIds.isNotEmpty) {
-      map['ids'] = exerciseIds.join(',');
+    if (programExerciseIds.isNotEmpty) {
+      map['programExerciseIds'] = programExerciseIds.join(',');
     }
 
     if (isDouble != null) {

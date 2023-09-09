@@ -65,11 +65,13 @@ class DioProgramRepository implements Repository<Program> {
   @override
   FutureOr<Program> update(Program model) async {
     try {
-      final response = await client.post(path, data: {
-        "id": model.id,
-        "name": model.name,
-        "endDate": model.endDate.toString(),
-      });
+      final response = await client.post(
+        '$path/${model.id}',
+        data: {
+          "name": model.name,
+          "endDate": model.endDate.toString(),
+        },
+      );
       final muscle = Program.fromJson(response.data['program']);
 
       return muscle;
@@ -98,5 +100,10 @@ class DioProgramRepository implements Repository<Program> {
 
       throw Exception(errorMessage);
     }
+  }
+
+  @override
+  FutureOr<List<Program>> postBulk(List<Program> models) {
+    return [];
   }
 }

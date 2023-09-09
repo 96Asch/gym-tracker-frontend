@@ -29,6 +29,34 @@ class ProgramPage extends ConsumerWidget {
               icon: Icon(Icons.delete_forever),
             ),
             ActionButton(
+              icon: Icon(Icons.sort),
+              onPressed: () {
+                showModalBottomSheet(
+                    showDragHandle: true,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20)),
+                    context: context,
+                    builder: (context) {
+                      return SizedBox(
+                        height: 300,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Text('Sort'),
+                            ElevatedButton.icon(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              icon: Icon(Icons.done),
+                              label: Text("Apply"),
+                            )
+                          ],
+                        ),
+                      );
+                    });
+              },
+            ),
+            ActionButton(
               icon: Icon(Icons.add),
               onPressed: () {
                 Navigator.push(

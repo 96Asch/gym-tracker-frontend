@@ -90,7 +90,7 @@ class DioExerciseRepository implements Repository<Exercise> {
   FutureOr<Exercise> update(Exercise exercise) async {
     try {
       final response = await client.patch(
-        path,
+        '$path/${exercise.id}',
         data: {
           'name': exercise.name,
           'muscleIds': exercise.muscles.map((muscle) => muscle.id),
@@ -108,5 +108,10 @@ class DioExerciseRepository implements Repository<Exercise> {
 
       throw Exception(errorMessage);
     }
+  }
+
+  @override
+  FutureOr<List<Exercise>> postBulk(List<Exercise> models) {
+    return [];
   }
 }

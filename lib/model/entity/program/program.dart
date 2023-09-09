@@ -11,7 +11,7 @@ class Program with _$Program {
     @JsonKey(name: 'id') required int id,
     @JsonKey(name: 'name') required String name,
     @JsonKey(name: 'endDate') required DateTime endDate,
-    @JsonKey(name: 'ProgramExercises')
+    @JsonKey(includeFromJson: false)
     @Default([])
     List<ProgramExercise> exercises,
   }) = _Program;

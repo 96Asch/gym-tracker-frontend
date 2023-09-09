@@ -6,6 +6,7 @@ import 'package:namer_app/model/entity/program/program.dart';
 import 'package:namer_app/model/entity/program/programexercise.dart';
 import 'package:namer_app/presentation/state/exerciseapi.dart';
 import 'package:namer_app/presentation/state/programapi.dart';
+import 'package:namer_app/presentation/state/programexerciseapi.dart';
 import 'package:namer_app/presentation/state/selectableexercise.dart';
 import 'package:namer_app/presentation/widget/errorsnackbar.dart';
 import 'package:namer_app/presentation/widget/exercise/selectableexercisegrid.dart';
@@ -34,6 +35,15 @@ class ProgramForm extends ConsumerWidget {
     }
 
     ref.listen(programApiProvider, (previous, next) {
+      next.when(
+          data: (data) {},
+          error: (error, stackTrace) {
+            showErrorSnackbar(error.toString());
+          },
+          loading: () {});
+    });
+
+    ref.listen(programExerciseApiProvider, (previous, next) {
       next.when(
           data: (data) {
             showErrorSnackbar("Succesfully added a new program!");
@@ -133,11 +143,14 @@ class ProgramForm extends ConsumerWidget {
           .map(
             (e) => ProgramExercise(
               id: 0,
-              order: 1 + selected.indexOf(e),
+              programId: 0,
+              order: 100 * (selected.indexOf(e) + 1),
               exercise: e,
+              sets: [],
             ),
           )
           .toList();
+
       final program = Program(
         id: 0,
         name: _formNameTextController.text,
@@ -145,7 +158,9 @@ class ProgramForm extends ConsumerWidget {
         exercises: programExercises,
       );
 
-      ref.read(programApiProvider.notifier).addProgram(program);
+      ref
+          .read(programApiProvider.notifier)
+          .addProgram(program, programExercises);
     }
   }
 }
