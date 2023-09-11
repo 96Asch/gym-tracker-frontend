@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_scroll_shadow/flutter_scroll_shadow.dart';
-import 'package:intl/intl.dart';
 import 'package:namer_app/model/entity/program/program.dart';
-import 'package:namer_app/model/entity/program/programexercisefilteroptions.dart';
 import 'package:namer_app/presentation/state/programapi.dart';
 import 'package:namer_app/presentation/page/programexercisepage.dart';
 import 'package:namer_app/presentation/state/programexerciseapi.dart';
+import 'package:namer_app/presentation/widget/program/programentry.dart';
 
 class ProgramList extends ConsumerWidget {
   final List<Program> programs;
@@ -43,20 +42,8 @@ class ProgramList extends ConsumerWidget {
                 },
                 child: Column(
                   children: [
-                    ListTile(
-                      title: Text(program.name),
-                      subtitle: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Icon(Icons.access_time),
-                          SizedBox(width: 10),
-                          Text(DateFormat(DateFormat.YEAR_MONTH_DAY)
-                              .format(program.endDate)),
-                        ],
-                      ),
-                      leading: Icon(Icons.abc),
-                    ),
-                    Divider()
+                    ProgramEntry(program: program),
+                    Divider(),
                   ],
                 ),
               );

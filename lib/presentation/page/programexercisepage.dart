@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:namer_app/config/util.dart';
+import 'package:namer_app/model/entity/appmessage.dart';
 import 'package:namer_app/model/entity/exercise/exercise.dart';
 import 'package:namer_app/model/entity/program/program.dart';
-import 'package:namer_app/model/entity/program/programexercise.dart';
 import 'package:namer_app/presentation/state/programexerciseapi.dart';
 import 'package:namer_app/presentation/state/setapi.dart';
+import 'package:namer_app/presentation/widget/errorsnackbar.dart';
 import 'package:namer_app/presentation/widget/expandingfab/actionbutton.dart';
 import 'package:namer_app/presentation/widget/expandingfab/expandingfab.dart';
 import 'package:namer_app/presentation/widget/set/setlist.dart';
@@ -26,6 +27,19 @@ class _ProgramExercisePageState extends ConsumerState<ProgramExercisePage> {
   @override
   Widget build(BuildContext context) {
     final allPe = ref.watch(programExerciseApiProvider);
+
+    ref.listen(programExerciseApiProvider, (previous, next) {
+      next.maybeWhen(
+        error: (error, stackTrace) {
+          if (error is AppMessage) {
+            print('hello');
+            ScaffoldMessenger.of(context)
+                .showSnackBar(getErrorSnackbar(Colors.red, error.message));
+          }
+        },
+        orElse: () {},
+      );
+    });
 
     return Scaffold(
       appBar: AppBar(

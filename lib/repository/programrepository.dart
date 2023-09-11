@@ -7,6 +7,7 @@ import 'package:namer_app/model/entity/mappable.dart';
 import 'package:namer_app/model/entity/program/program.dart';
 import 'package:namer_app/model/repository/repository.dart';
 import 'package:namer_app/presentation/state/repository.dart';
+import 'package:namer_app/repository/neterror.dart';
 
 final programRepoProvider = Provider((ref) => DioProgramRepository(
       path: '${Config.serverUrl}/programs',
@@ -31,14 +32,8 @@ class DioProgramRepository implements Repository<Program> {
           (programJson as List).map((json) => Program.fromJson(json)).toList();
 
       return programs;
-    } on DioException catch (e) {
-      print(e.response);
-      var errorMessage = e.message;
-      if (e.response != null) {
-        errorMessage = (e.response!.data as Map<String, String>)['error'];
-      }
-
-      throw Exception(errorMessage);
+    } catch (e) {
+      throw parseNetworkError(e);
     }
   }
 
@@ -52,13 +47,8 @@ class DioProgramRepository implements Repository<Program> {
       final muscle = Program.fromJson(response.data['program']);
 
       return muscle;
-    } on DioException catch (e) {
-      var errorMessage = e.message;
-      if (e.response != null) {
-        errorMessage = (e.response!.data as Map<String, dynamic>)['error'];
-      }
-
-      throw Exception(errorMessage);
+    } catch (e) {
+      throw parseNetworkError(e);
     }
   }
 
@@ -75,13 +65,8 @@ class DioProgramRepository implements Repository<Program> {
       final muscle = Program.fromJson(response.data['program']);
 
       return muscle;
-    } on DioException catch (e) {
-      var errorMessage = e.message;
-      if (e.response != null) {
-        errorMessage = (e.response!.data as Map<String, dynamic>)['error'];
-      }
-
-      throw Exception(errorMessage);
+    } catch (e) {
+      throw parseNetworkError(e);
     }
   }
 
@@ -92,13 +77,8 @@ class DioProgramRepository implements Repository<Program> {
         path,
         queryParameters: options.toMap(),
       );
-    } on DioException catch (e) {
-      var errorMessage = e.message;
-      if (e.response != null) {
-        errorMessage = (e.response!.data as Map<String, dynamic>)['error'];
-      }
-
-      throw Exception(errorMessage);
+    } catch (e) {
+      throw parseNetworkError(e);
     }
   }
 

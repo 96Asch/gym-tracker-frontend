@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:namer_app/model/entity/appmessage.dart';
 import 'package:namer_app/presentation/state/exerciseapi.dart';
+import 'package:namer_app/presentation/widget/error/errorrefresh.dart';
+import 'package:namer_app/presentation/widget/errorsnackbar.dart';
 import 'package:namer_app/presentation/widget/exercise/exerciseform.dart';
 import 'package:namer_app/presentation/widget/exercise/exercisegrid.dart';
 import 'package:namer_app/presentation/widget/expandingfab/actionbutton.dart';
@@ -13,10 +16,26 @@ class ExercisePage extends ConsumerStatefulWidget {
 
 class _ExercisePageState extends ConsumerState<ExercisePage> {
   bool _isMultiSelect = false;
+  bool _canEdit = true;
 
   @override
   Widget build(BuildContext context) {
     var exercises = ref.watch(exerciseApiProvider);
+
+    ref.listen(exerciseApiProvider, (previous, next) {
+      next.maybeWhen(
+        error: (error, stackTrace) {
+          if (error is AppMessage) {
+            ScaffoldMessenger.of(context)
+                .showSnackBar(getErrorSnackbar(Colors.red, error.message));
+            setState(() {
+              _canEdit = false;
+            });
+          }
+        },
+        orElse: () {},
+      );
+    });
 
     return Scaffold(
       appBar: _isMultiSelect
@@ -26,10 +45,15 @@ class _ExercisePageState extends ConsumerState<ExercisePage> {
           : null,
       body: exercises.when(
         data: (data) => ExerciseGrid(exercises: data),
-        error: (error, stackTrace) => Text(error.toString()),
+        error: (error, stackTrace) => ErrorRefresh(
+          onRefresh: () {
+            ref.invalidate(exerciseApiProvider);
+          },
+        ),
         loading: () => CircularProgressIndicator(),
       ),
       floatingActionButton: ExpandableFab(
+        enabled: _canEdit,
         distance: 100,
         children: [
           ActionButton(

@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 SnackBar getErrorSnackbar(Color color, String message) {
   return SnackBar(
     backgroundColor: Color.fromARGB(32, 0, 0, 0),
+    shape: RoundedRectangleBorder(
+        side: BorderSide.none, borderRadius: BorderRadius.circular(20)),
     duration: Duration(seconds: 3),
-    showCloseIcon: true,
     content: Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(0.0),
       child: Row(
         mainAxisSize: MainAxisSize.max,
         children: [

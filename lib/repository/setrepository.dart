@@ -7,6 +7,7 @@ import 'package:namer_app/model/entity/mappable.dart';
 import 'package:namer_app/model/repository/repository.dart';
 import 'package:namer_app/model/entity/set/set.dart';
 import 'package:namer_app/presentation/state/repository.dart';
+import 'package:namer_app/repository/neterror.dart';
 
 final setRepoProvider = Provider(
   (ref) => DioSetRepository(
@@ -33,13 +34,8 @@ class DioSetRepository implements Repository<Set> {
       final newSet = Set.fromJson(response.data['set']);
 
       return newSet;
-    } on DioException catch (e) {
-      var errorMessage = e.message;
-      if (e.response != null) {
-        errorMessage = (e.response!.data as Map<String, dynamic>)['error'];
-      }
-
-      throw Exception(errorMessage);
+    } catch (e) {
+      throw parseNetworkError(e);
     }
   }
 
@@ -59,14 +55,8 @@ class DioSetRepository implements Repository<Set> {
       final sets = (setJson as List).map((json) => Set.fromJson(json)).toList();
 
       return sets;
-    } on DioException catch (e) {
-      print(e.response);
-      var errorMessage = e.message;
-      if (e.response != null) {
-        errorMessage = (e.response!.data as Map<String, String>)['error'];
-      }
-
-      throw Exception(errorMessage);
+    } catch (e) {
+      throw parseNetworkError(e);
     }
   }
 
@@ -84,13 +74,8 @@ class DioSetRepository implements Repository<Set> {
       final updatedSet = Set.fromJson(response.data['program']);
 
       return updatedSet;
-    } on DioException catch (e) {
-      var errorMessage = e.message;
-      if (e.response != null) {
-        errorMessage = (e.response!.data as Map<String, dynamic>)['error'];
-      }
-
-      throw Exception(errorMessage);
+    } catch (e) {
+      throw parseNetworkError(e);
     }
   }
 
@@ -101,13 +86,8 @@ class DioSetRepository implements Repository<Set> {
         path,
         queryParameters: options.toMap(),
       );
-    } on DioException catch (e) {
-      var errorMessage = e.message;
-      if (e.response != null) {
-        errorMessage = (e.response!.data as Map<String, dynamic>)['error'];
-      }
-
-      throw Exception(errorMessage);
+    } catch (e) {
+      throw parseNetworkError(e);
     }
   }
 }

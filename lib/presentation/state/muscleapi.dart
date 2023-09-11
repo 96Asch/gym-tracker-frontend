@@ -13,16 +13,12 @@ class MuscleApiList extends AsyncNotifier<List<Muscle>> {
     return ref.read(muscleServiceProvider).get();
   }
 
-  Future<void> addMuscle(String name,
-      {Function(String message)? onError}) async {
+  Future<void> addMuscle(String name) async {
     final currMuscles = state.value ?? [];
     state = AsyncLoading();
     state = await AsyncValue.guard(() async {
       final createdMuscle = await ref.read(muscleServiceProvider).create(name);
       return [...currMuscles, createdMuscle];
     });
-    if (state.hasError && onError != null) {
-      onError(state.error.toString());
-    }
   }
 }

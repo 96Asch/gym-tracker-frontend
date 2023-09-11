@@ -7,6 +7,7 @@ import 'package:namer_app/model/entity/mappable.dart';
 import 'package:namer_app/model/entity/muscle/muscle.dart';
 import 'package:namer_app/model/repository/repository.dart';
 import 'package:namer_app/presentation/state/repository.dart';
+import 'package:namer_app/repository/neterror.dart';
 
 final muscleRepoProvider = Provider((ref) => DioMuscleRepository(
       path: '${Config.serverUrl}/muscles',
@@ -31,14 +32,8 @@ class DioMuscleRepository implements Repository<Muscle> {
           (musclesJson as List).map((json) => Muscle.fromJson(json)).toList();
 
       return muscles;
-    } on DioException catch (e) {
-      print(e.response);
-      var errorMessage = e.message;
-      if (e.response != null) {
-        errorMessage = (e.response!.data as Map<String, String>)['error'];
-      }
-
-      throw Exception(errorMessage);
+    } catch (e) {
+      throw parseNetworkError(e);
     }
   }
 
@@ -51,13 +46,8 @@ class DioMuscleRepository implements Repository<Muscle> {
       final muscle = Muscle.fromJson(response.data['muscle']);
 
       return muscle;
-    } on DioException catch (e) {
-      var errorMessage = e.message;
-      if (e.response != null) {
-        errorMessage = (e.response!.data as Map<String, dynamic>)['error'];
-      }
-
-      throw Exception(errorMessage);
+    } catch (e) {
+      throw parseNetworkError(e);
     }
   }
 
@@ -70,13 +60,8 @@ class DioMuscleRepository implements Repository<Muscle> {
       final muscle = Muscle.fromJson(response.data['muscle']);
 
       return muscle;
-    } on DioException catch (e) {
-      var errorMessage = e.message;
-      if (e.response != null) {
-        errorMessage = (e.response!.data as Map<String, dynamic>)['error'];
-      }
-
-      throw Exception(errorMessage);
+    } catch (e) {
+      throw parseNetworkError(e);
     }
   }
 
@@ -87,13 +72,8 @@ class DioMuscleRepository implements Repository<Muscle> {
         path,
         queryParameters: options.toMap(),
       );
-    } on DioException catch (e) {
-      var errorMessage = e.message;
-      if (e.response != null) {
-        errorMessage = (e.response!.data as Map<String, dynamic>)['error'];
-      }
-
-      throw Exception(errorMessage);
+    } catch (e) {
+      throw parseNetworkError(e);
     }
   }
 

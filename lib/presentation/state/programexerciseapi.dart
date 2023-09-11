@@ -91,4 +91,36 @@ class ProgramExerciseApiList
       print("newState");
     }
   }
+
+  Future<void> removeSet(int programId, Set model) async {
+    final Map<int, List<ProgramExercise>> currentPeMap =
+        state.valueOrNull ?? <int, List<ProgramExercise>>{};
+
+    state = AsyncLoading();
+
+    final peIndex = currentPeMap[programId]!
+        .indexWhere((element) => element.id == model.programExerciseId);
+
+    if (peIndex != -1) {
+      final programExercise = currentPeMap[programId]![peIndex].copyWith(
+          sets: currentPeMap[programId]![peIndex]
+              .sets
+              .where((element) => element.id != model.id)
+              .toList()
+            ..sort((a, b) => a.createdAt!.compareTo(b.createdAt!)));
+
+      final programExercises = [
+        ...currentPeMap[programId]!
+            .where((element) => element.id != programExercise.id),
+        programExercise
+      ]..sort((a, b) => a.order.compareTo(b.order));
+
+      final filteredPeMap = currentPeMap..remove(programExercise.programId);
+
+      state = AsyncData({
+        ...filteredPeMap,
+        ...{programId: programExercises}
+      });
+    }
+  }
 }

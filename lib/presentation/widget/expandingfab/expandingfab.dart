@@ -6,10 +6,12 @@ class ExpandableFab extends StatefulWidget {
   const ExpandableFab({
     super.key,
     this.initialOpen,
+    this.enabled = true,
     required this.distance,
     required this.children,
   });
 
+  final bool enabled;
   final bool? initialOpen;
   final double distance;
   final List<Widget> children;
@@ -23,10 +25,12 @@ class _ExpandableFabState extends State<ExpandableFab>
   late final AnimationController _controller;
   late final Animation<double> _expandAnimation;
   bool _open = false;
+  bool _enabled = true;
 
   @override
   void initState() {
     super.initState();
+    _enabled = widget.enabled;
     _open = widget.initialOpen ?? false;
     _controller = AnimationController(
       value: _open ? 1.0 : 0.0,
@@ -59,6 +63,7 @@ class _ExpandableFabState extends State<ExpandableFab>
 
   @override
   Widget build(BuildContext context) {
+    print(_enabled);
     return SizedBox.expand(
       child: Stack(
         alignment: Alignment.bottomRight,
@@ -82,7 +87,7 @@ class _ExpandableFabState extends State<ExpandableFab>
           clipBehavior: Clip.antiAlias,
           elevation: 4,
           child: InkWell(
-            onTap: _toggle,
+            onTap: _enabled ? _toggle : null,
             child: Padding(
               padding: const EdgeInsets.all(8),
               child: Icon(
@@ -113,7 +118,7 @@ class _ExpandableFabState extends State<ExpandableFab>
           curve: const Interval(0.25, 1.0, curve: Curves.easeInOut),
           duration: const Duration(milliseconds: 250),
           child: FloatingActionButton(
-            onPressed: _toggle,
+            onPressed: _enabled ? () => _toggle() : null,
             child: const Icon(Icons.edit),
           ),
         ),

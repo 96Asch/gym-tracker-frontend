@@ -7,6 +7,7 @@ import 'package:namer_app/model/entity/exercise/exercise.dart';
 import 'package:namer_app/model/entity/mappable.dart';
 import 'package:namer_app/model/repository/repository.dart';
 import 'package:namer_app/presentation/state/repository.dart';
+import 'package:namer_app/repository/neterror.dart';
 
 final exerciseRepoProvider = Provider(
   (ref) => DioExerciseRepository(
@@ -35,15 +36,8 @@ class DioExerciseRepository implements Repository<Exercise> {
       final createdExercise = Exercise.fromJson(response.data['exercise']);
 
       return createdExercise;
-    } on DioException catch (e) {
-      print(e);
-
-      var errorMessage = e.message;
-      if (e.response != null) {
-        errorMessage = (e.response!.data as Map<String, dynamic>)['error'];
-      }
-
-      throw Exception(errorMessage);
+    } catch (e) {
+      throw parseNetworkError(e);
     }
   }
 
@@ -59,13 +53,8 @@ class DioExerciseRepository implements Repository<Exercise> {
       final exercises = jsonList.map((json) => Exercise.fromJson(json));
 
       return exercises.toList();
-    } on DioException catch (e) {
-      var errorMessage = e.message;
-      if (e.response != null) {
-        errorMessage = (e.response!.data as Map<String, dynamic>)['error'];
-      }
-
-      throw Exception(errorMessage);
+    } catch (e) {
+      throw parseNetworkError(e);
     }
   }
 
@@ -76,13 +65,8 @@ class DioExerciseRepository implements Repository<Exercise> {
         path,
         queryParameters: options.toMap(),
       );
-    } on DioException catch (e) {
-      var errorMessage = e.message;
-      if (e.response != null) {
-        errorMessage = (e.response!.data as Map<String, dynamic>)['error'];
-      }
-
-      throw Exception(errorMessage);
+    } catch (e) {
+      throw parseNetworkError(e);
     }
   }
 
@@ -100,13 +84,8 @@ class DioExerciseRepository implements Repository<Exercise> {
       final createdExercise = Exercise.fromJson(response.data['exercise']);
 
       return createdExercise;
-    } on DioException catch (e) {
-      var errorMessage = e.message;
-      if (e.response != null) {
-        errorMessage = (e.response!.data as Map<String, dynamic>)['error'];
-      }
-
-      throw Exception(errorMessage);
+    } catch (e) {
+      throw parseNetworkError(e);
     }
   }
 

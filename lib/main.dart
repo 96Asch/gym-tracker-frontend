@@ -43,6 +43,7 @@ class HomePage extends ConsumerStatefulWidget {
   ConsumerState<HomePage> createState() => _HomePageState();
 }
 
+@immutable
 class PageItem {
   const PageItem({
     required this.title,

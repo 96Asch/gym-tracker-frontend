@@ -52,4 +52,16 @@ class SetApiList extends AsyncNotifier<List<Set>> {
       return [...currSets, createdSet];
     });
   }
+
+  Future<void> deleteSet(int programId, Set model) async {
+    final currSets = state.value ?? [];
+    state = AsyncLoading();
+    state = await AsyncValue.guard(() async {
+      await ref.read(setServiceProvider).delete([model.id]);
+      await ref
+          .read(programExerciseApiProvider.notifier)
+          .removeSet(programId, model);
+      return [...currSets.where((element) => element.id != model.id)];
+    });
+  }
 }

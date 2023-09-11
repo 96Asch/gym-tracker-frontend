@@ -7,6 +7,7 @@ import 'package:namer_app/model/entity/mappable.dart';
 import 'package:namer_app/model/entity/program/programexercise.dart';
 import 'package:namer_app/model/repository/repository.dart';
 import 'package:namer_app/presentation/state/repository.dart';
+import 'package:namer_app/repository/neterror.dart';
 
 final programExerciseRepoProvider = Provider((ref) =>
     DioProgramExerciseRepository(
@@ -34,14 +35,8 @@ class DioProgramExerciseRepository implements Repository<ProgramExercise> {
           .toList();
 
       return programExercises;
-    } on DioException catch (e) {
-      print(e.response);
-      var errorMessage = e.message;
-      if (e.response != null) {
-        errorMessage = (e.response!.data as Map<String, String>)['error'];
-      }
-
-      throw Exception(errorMessage);
+    } catch (e) {
+      throw parseNetworkError(e);
     }
   }
 
@@ -57,13 +52,8 @@ class DioProgramExerciseRepository implements Repository<ProgramExercise> {
           ProgramExercise.fromJson(response.data['programExercise']);
 
       return programExercise;
-    } on DioException catch (e) {
-      var errorMessage = e.message;
-      if (e.response != null) {
-        errorMessage = (e.response!.data as Map<String, dynamic>)['error'];
-      }
-
-      throw Exception(errorMessage);
+    } catch (e) {
+      throw parseNetworkError(e);
     }
   }
 
@@ -77,13 +67,8 @@ class DioProgramExerciseRepository implements Repository<ProgramExercise> {
           ProgramExercise.fromJson(response.data['programExercise']);
 
       return programExercise;
-    } on DioException catch (e) {
-      var errorMessage = e.message;
-      if (e.response != null) {
-        errorMessage = (e.response!.data as Map<String, dynamic>)['error'];
-      }
-
-      throw Exception(errorMessage);
+    } catch (e) {
+      throw parseNetworkError(e);
     }
   }
 
@@ -94,13 +79,8 @@ class DioProgramExerciseRepository implements Repository<ProgramExercise> {
         path,
         queryParameters: options.toMap(),
       );
-    } on DioException catch (e) {
-      var errorMessage = e.message;
-      if (e.response != null) {
-        errorMessage = (e.response!.data as Map<String, dynamic>)['error'];
-      }
-
-      throw Exception(errorMessage);
+    } catch (e) {
+      throw parseNetworkError(e);
     }
   }
 
@@ -126,13 +106,8 @@ class DioProgramExerciseRepository implements Repository<ProgramExercise> {
           .toList();
 
       return programExercises;
-    } on DioException catch (e) {
-      var errorMessage = e.message;
-      if (e.response != null) {
-        errorMessage = (e.response!.data as Map<String, dynamic>)['error'];
-      }
-
-      throw Exception(errorMessage);
+    } catch (e) {
+      throw parseNetworkError(e);
     }
   }
 }
