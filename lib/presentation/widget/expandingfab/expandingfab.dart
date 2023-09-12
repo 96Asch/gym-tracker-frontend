@@ -1,37 +1,35 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:namer_app/presentation/state/enablefab.dart';
+
 @immutable
-class ExpandableFab extends StatefulWidget {
+class ExpandableFab extends ConsumerStatefulWidget {
   const ExpandableFab({
     super.key,
     this.initialOpen,
-    this.enabled = true,
     required this.distance,
     required this.children,
   });
 
-  final bool enabled;
   final bool? initialOpen;
   final double distance;
   final List<Widget> children;
 
   @override
-  State<ExpandableFab> createState() => _ExpandableFabState();
+  ConsumerState<ExpandableFab> createState() => _ExpandableFabState();
 }
 
-class _ExpandableFabState extends State<ExpandableFab>
+class _ExpandableFabState extends ConsumerState<ExpandableFab>
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
   late final Animation<double> _expandAnimation;
   bool _open = false;
-  bool _enabled = true;
 
   @override
   void initState() {
     super.initState();
-    _enabled = widget.enabled;
-    _open = widget.initialOpen ?? false;
     _controller = AnimationController(
       value: _open ? 1.0 : 0.0,
       duration: const Duration(milliseconds: 250),
@@ -63,21 +61,22 @@ class _ExpandableFabState extends State<ExpandableFab>
 
   @override
   Widget build(BuildContext context) {
-    print(_enabled);
+    var enabled = ref.watch(enableFabProvider);
+
     return SizedBox.expand(
       child: Stack(
         alignment: Alignment.bottomRight,
         clipBehavior: Clip.none,
         children: [
-          _buildTapToCloseFab(),
+          _buildTapToCloseFab(enabled),
           ..._buildExpandingActionButtons(),
-          _buildTapToOpenFab(),
+          _buildTapToOpenFab(enabled),
         ],
       ),
     );
   }
 
-  Widget _buildTapToCloseFab() {
+  Widget _buildTapToCloseFab(bool enabled) {
     return SizedBox(
       width: 56,
       height: 56,
@@ -87,7 +86,7 @@ class _ExpandableFabState extends State<ExpandableFab>
           clipBehavior: Clip.antiAlias,
           elevation: 4,
           child: InkWell(
-            onTap: _enabled ? _toggle : null,
+            onTap: enabled ? _toggle : null,
             child: Padding(
               padding: const EdgeInsets.all(8),
               child: Icon(
@@ -101,7 +100,7 @@ class _ExpandableFabState extends State<ExpandableFab>
     );
   }
 
-  Widget _buildTapToOpenFab() {
+  Widget _buildTapToOpenFab(bool enabled) {
     return IgnorePointer(
       ignoring: _open,
       child: AnimatedContainer(
@@ -118,7 +117,8 @@ class _ExpandableFabState extends State<ExpandableFab>
           curve: const Interval(0.25, 1.0, curve: Curves.easeInOut),
           duration: const Duration(milliseconds: 250),
           child: FloatingActionButton(
-            onPressed: _enabled ? () => _toggle() : null,
+            backgroundColor: enabled ? null : Colors.grey,
+            onPressed: enabled ? () => _toggle() : null,
             child: const Icon(Icons.edit),
           ),
         ),

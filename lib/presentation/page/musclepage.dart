@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:namer_app/config/calcgriditems.dart';
 import 'package:namer_app/model/entity/appmessage.dart';
+import 'package:namer_app/presentation/state/enablefab.dart';
 import 'package:namer_app/presentation/state/muscleapi.dart';
 import 'package:namer_app/presentation/widget/error/errorrefresh.dart';
 import 'package:namer_app/presentation/widget/errorsnackbar.dart';
@@ -10,16 +11,9 @@ import 'package:namer_app/presentation/widget/expandingfab/expandingfab.dart';
 import 'package:namer_app/presentation/widget/muscle/muscleaddbutton.dart';
 import 'package:namer_app/presentation/widget/muscle/musclegridview.dart';
 
-class MusclePage extends ConsumerStatefulWidget {
+class MusclePage extends ConsumerWidget {
   @override
-  ConsumerState<MusclePage> createState() => _MusclePageState();
-}
-
-class _MusclePageState extends ConsumerState<MusclePage> {
-  bool _canEdit = true;
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     var muscles = ref.watch(muscleApiProvider);
 
     ref.listen(muscleApiProvider, (previous, next) {
@@ -28,11 +22,11 @@ class _MusclePageState extends ConsumerState<MusclePage> {
           if (error is AppMessage) {
             ScaffoldMessenger.of(context)
                 .showSnackBar(getErrorSnackbar(Colors.red, error.message));
-            setState(() {
-              _canEdit = false;
-            });
+            ref.read(enableFabProvider.notifier).update((state) => false);
           }
         },
+        data: (data) =>
+            ref.read(enableFabProvider.notifier).update((state) => true),
         orElse: () {},
       );
     });
@@ -57,7 +51,6 @@ class _MusclePageState extends ConsumerState<MusclePage> {
         ),
       ),
       floatingActionButton: ExpandableFab(
-        enabled: _canEdit,
         distance: 100,
         children: [
           ActionButton(

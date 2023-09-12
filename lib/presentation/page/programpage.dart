@@ -1,29 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:namer_app/config/util.dart';
 import 'package:namer_app/model/entity/appmessage.dart';
+import 'package:namer_app/model/entity/program/programsort.dart';
+import 'package:namer_app/presentation/state/enablefab.dart';
 import 'package:namer_app/presentation/state/programapi.dart';
+import 'package:namer_app/presentation/state/programfilter.dart';
 import 'package:namer_app/presentation/widget/error/errorrefresh.dart';
 import 'package:namer_app/presentation/widget/errorsnackbar.dart';
 import 'package:namer_app/presentation/widget/expandingfab/actionbutton.dart';
 import 'package:namer_app/presentation/widget/expandingfab/expandingfab.dart';
 import 'package:namer_app/presentation/widget/program/programform.dart';
 import 'package:namer_app/presentation/widget/program/programlist.dart';
+import 'package:namer_app/presentation/widget/program/programsort.dart';
 
-class ProgramPage extends ConsumerStatefulWidget {
-  const ProgramPage({
-    super.key,
-  });
-
+class ProgramPage extends ConsumerWidget {
   @override
-  ConsumerState<ProgramPage> createState() => _ProgramPageState();
-}
-
-class _ProgramPageState extends ConsumerState<ProgramPage> {
-  bool _canEdit = true;
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final programs = ref.watch(programApiProvider);
+    final programFilter = ref.watch(programFilterProvider);
+
+    print('rebuild');
 
     ref.listen(programApiProvider, (previous, next) {
       next.maybeWhen(
@@ -31,13 +28,11 @@ class _ProgramPageState extends ConsumerState<ProgramPage> {
           if (error is AppMessage) {
             ScaffoldMessenger.of(context)
                 .showSnackBar(getErrorSnackbar(Colors.red, error.message));
-
-            setState(() {
-              _canEdit = false;
-              print(_canEdit);
-            });
+            ref.read(enableFabProvider.notifier).update((state) => false);
           }
         },
+        data: (data) =>
+            ref.read(enableFabProvider.notifier).update((state) => true),
         orElse: () {},
       );
     });
@@ -45,14 +40,13 @@ class _ProgramPageState extends ConsumerState<ProgramPage> {
     return Center(
       child: Scaffold(
         body: programs.when(
-          data: (data) => ProgramList(programs: data),
+          data: (data) => ProgramList(programs: programFilter.filter(data)),
           error: (error, stackTrace) => ErrorRefresh(onRefresh: () {
             ref.invalidate(programApiProvider);
           }),
           loading: () => CircularProgressIndicator(),
         ),
         floatingActionButton: ExpandableFab(
-          enabled: _canEdit,
           distance: 100,
           children: [
             ActionButton(
@@ -62,26 +56,13 @@ class _ProgramPageState extends ConsumerState<ProgramPage> {
               icon: Icon(Icons.sort),
               onPressed: () {
                 showModalBottomSheet(
-                    showDragHandle: true,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20)),
                     context: context,
                     builder: (context) {
-                      return SizedBox(
-                        height: 300,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Text('Sort'),
-                            ElevatedButton.icon(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              icon: Icon(Icons.done),
-                              label: Text("Apply"),
-                            )
-                          ],
-                        ),
+                      return SortPrograms(
+                        initialSort: programFilter.sortBy,
+                        initialStatus: programFilter.status,
                       );
                     });
               },
@@ -103,5 +84,3 @@ class _ProgramPageState extends ConsumerState<ProgramPage> {
     );
   }
 }
-
-class MyAppState extends ChangeNotifier {}

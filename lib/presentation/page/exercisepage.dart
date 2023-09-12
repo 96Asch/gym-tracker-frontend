@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:namer_app/model/entity/appmessage.dart';
+import 'package:namer_app/presentation/state/enablefab.dart';
 import 'package:namer_app/presentation/state/exerciseapi.dart';
 import 'package:namer_app/presentation/widget/error/errorrefresh.dart';
 import 'package:namer_app/presentation/widget/errorsnackbar.dart';
@@ -28,11 +29,11 @@ class _ExercisePageState extends ConsumerState<ExercisePage> {
           if (error is AppMessage) {
             ScaffoldMessenger.of(context)
                 .showSnackBar(getErrorSnackbar(Colors.red, error.message));
-            setState(() {
-              _canEdit = false;
-            });
+            ref.read(enableFabProvider.notifier).update((state) => false);
           }
         },
+        data: (data) =>
+            ref.read(enableFabProvider.notifier).update((state) => true),
         orElse: () {},
       );
     });
@@ -53,7 +54,6 @@ class _ExercisePageState extends ConsumerState<ExercisePage> {
         loading: () => CircularProgressIndicator(),
       ),
       floatingActionButton: ExpandableFab(
-        enabled: _canEdit,
         distance: 100,
         children: [
           ActionButton(

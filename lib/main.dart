@@ -24,12 +24,13 @@ class MyApp extends ConsumerWidget {
     return MaterialApp(
       title: 'Gym Tracker',
       theme: ThemeData(
-        useMaterial3: false,
-        colorScheme: ColorScheme.dark(),
-      ),
+          useMaterial3: false,
+          colorScheme: ColorScheme.dark(),
+          floatingActionButtonTheme:
+              FloatingActionButtonThemeData(backgroundColor: Colors.red)),
       darkTheme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-            seedColor: Color.fromARGB(255, 220, 0, 0),
+            seedColor: Color.fromARGB(255, 7, 33, 166),
             brightness: Brightness.dark),
       ),
       themeMode: ThemeMode.system,
