@@ -79,8 +79,6 @@ class _ExercisePageState extends ConsumerState<ExercisePage> {
   }
 
   void _toggleMultiSelect() {
-    print("build");
-
     setState(() {
       _isMultiSelect = !_isMultiSelect;
     });

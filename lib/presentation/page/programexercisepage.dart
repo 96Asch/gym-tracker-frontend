@@ -119,12 +119,22 @@ class ProgramExerciseExpandedHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(10.0),
-      child: Row(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(exercise.name.toUpperCase(), style: TextStyle(fontSize: 15)),
-          Text(exercise.muscles.map((e) => e.name.capitalize()).join(', ')),
+          Text(
+            exercise.name.toUpperCase(),
+            style: TextStyle(
+              fontSize: 17,
+              shadows: [Shadow(offset: Offset(3, 2))],
+            ),
+          ),
+          Text(
+            exercise.muscles.map((e) => e.name.capitalize()).join(', '),
+            softWrap: true,
+            maxLines: 3,
+            style: TextStyle(fontSize: 10),
+          ),
         ],
       ),
     );

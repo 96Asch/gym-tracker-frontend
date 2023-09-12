@@ -21,6 +21,11 @@ class _MuscleGridViewState extends ConsumerState<MuscleGridView> {
 
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
+
+    final double itemHeight = (size.height - kToolbarHeight - 24) / 4;
+    final double itemWidth = size.width / 2;
+
     return RefreshIndicator(
       onRefresh: () {
         ref.invalidate(muscleApiProvider);
@@ -29,6 +34,7 @@ class _MuscleGridViewState extends ConsumerState<MuscleGridView> {
       child: ScrollShadow(
         size: 10,
         child: GridView.count(
+          childAspectRatio: itemWidth / itemHeight,
           crossAxisSpacing: 5,
           mainAxisSpacing: 5,
           crossAxisCount: widget.numTilesPerRow,

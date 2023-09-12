@@ -84,8 +84,7 @@ class ExerciseGridTile extends StatelessWidget {
         ),
       ),
       child: ColoredBox(
-          color: colorScheme.primaryContainer.withAlpha(100),
-          child: Icon(Icons.ac_unit_outlined)),
+          color: colorScheme.primaryContainer.withAlpha(100), child: null),
     );
   }
 }

@@ -18,11 +18,17 @@ class _ExerciseGridState extends ConsumerState<ExerciseGrid> {
   Widget build(BuildContext context) {
     var colorScheme = Theme.of(context).colorScheme;
 
+    var size = MediaQuery.of(context).size;
+
+    final double itemHeight = (size.height - kToolbarHeight - 24) / 2;
+    final double itemWidth = size.width / 2;
+
     return Padding(
         padding: const EdgeInsets.all(8.0),
         child: GridView.count(
-          mainAxisSpacing: 10,
-          crossAxisSpacing: 10,
+          mainAxisSpacing: 15,
+          childAspectRatio: (itemWidth / itemHeight),
+          crossAxisSpacing: 15,
           crossAxisCount: getNumGridItems(context),
           children: widget.exercises
               .map((e) => ExerciseGridTile(

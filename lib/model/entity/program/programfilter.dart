@@ -15,7 +15,6 @@ class ProgramFilter with _$ProgramFilter {
   }) = _ProgramFilter;
 
   List<Program> filter(List<Program> programs) {
-    print(programs.length);
     List<Program> filteredPrograms = List.from(programs);
 
     switch (status) {
@@ -28,7 +27,6 @@ class ProgramFilter with _$ProgramFilter {
             .removeWhere((element) => element.endDate.isAfter(DateTime.now()));
         break;
       default:
-        print("all");
         break;
     }
 

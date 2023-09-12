@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:namer_app/model/entity/appmessage.dart';
 import 'package:namer_app/model/entity/exercise/exercise.dart';
 import 'package:namer_app/model/entity/program/program.dart';
 import 'package:namer_app/model/entity/program/programexercise.dart';
+import 'package:namer_app/presentation/state/enablefab.dart';
 import 'package:namer_app/presentation/state/exerciseapi.dart';
 import 'package:namer_app/presentation/state/programapi.dart';
 import 'package:namer_app/presentation/state/programexerciseapi.dart';
@@ -27,32 +29,21 @@ class ProgramForm extends ConsumerWidget {
     final formTextStyle = TextStyle();
     final exercises = ref.watch(exerciseApiProvider);
 
-    void showErrorSnackbar(String message) {
-      ScaffoldMessenger.of(context).showSnackBar(getErrorSnackbar(
-        Colors.white70,
-        message,
-      ));
-    }
-
-    ref.listen(programApiProvider, (previous, next) {
-      next.when(
-          data: (data) {},
-          error: (error, stackTrace) {
-            showErrorSnackbar(error.toString());
-          },
-          loading: () {});
-    });
-
     ref.listen(programExerciseApiProvider, (previous, next) {
-      next.when(
-          data: (data) {
-            showErrorSnackbar("Succesfully added a new program!");
-            Navigator.pop(context);
-          },
-          error: (error, stackTrace) {
-            showErrorSnackbar(error.toString());
-          },
-          loading: () {});
+      next.maybeWhen(
+        error: (error, stackTrace) {
+          if (error is AppMessage) {
+            ScaffoldMessenger.of(context)
+                .showSnackBar(getErrorSnackbar(Colors.red, error.message));
+          }
+        },
+        data: (data) {
+          ScaffoldMessenger.of(context).showSnackBar(getErrorSnackbar(
+              Colors.green, "Succesfully created a new program"));
+          Navigator.pop(context);
+        },
+        orElse: () {},
+      );
     });
 
     return Scaffold(

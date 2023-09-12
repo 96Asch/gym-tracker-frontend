@@ -83,12 +83,9 @@ class _HomePageState extends ConsumerState<HomePage> {
       )
     ];
 
-    var mainArea = ColoredBox(
-      color: colorScheme.primaryContainer,
-      child: AnimatedSwitcher(
-        duration: Duration(milliseconds: 200),
-        child: pageItems[selectedIndex].page,
-      ),
+    var mainArea = AnimatedSwitcher(
+      duration: Duration(milliseconds: 400),
+      child: pageItems[selectedIndex].page,
     );
 
     return LayoutBuilder(

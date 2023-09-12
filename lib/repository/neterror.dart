@@ -19,6 +19,12 @@ AppMessage parseNetworkError(e) {
             message =
                 AppMessage(message: e.response!.data['error'], type: type);
             break;
+          case 301:
+            AppMessage(message: e.message!, type: type);
+            break;
+          default:
+            AppMessage(message: "Unimplemented Error message", type: type);
+            break;
         }
         break;
       default:

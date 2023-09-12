@@ -20,8 +20,6 @@ class ProgramPage extends ConsumerWidget {
     final programs = ref.watch(programApiProvider);
     final programFilter = ref.watch(programFilterProvider);
 
-    print('rebuild');
-
     ref.listen(programApiProvider, (previous, next) {
       next.maybeWhen(
         error: (error, stackTrace) {

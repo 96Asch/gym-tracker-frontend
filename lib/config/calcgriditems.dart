@@ -4,9 +4,9 @@ int getNumGridItems(BuildContext context) {
   final shortestSide = MediaQuery.of(context).size.shortestSide;
 
   if (shortestSide < 300) {
-    return 1;
-  } else if (shortestSide < 400) {
     return 2;
+  } else if (shortestSide < 400) {
+    return 3;
   } else if (shortestSide < 700) {
     return 3;
   } else if (shortestSide < 800) {
